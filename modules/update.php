@@ -1,10 +1,48 @@
 <?php
 
-if(isset($_POST["id"]) && (isset($_POST["email"]) || isset($_POST["name"]))) {
-  $id = intval($_POST["id"]);
-  // some data
-  //$DB->exec("UPDATE `users`  ...  WHERE `id` = ?", [$id]);
-  header("Location: /"); 
-  exit();
-} 
+$err = "";
+
+$user = $DB->fetch("SELECT * FROM `users` WHERE `id` = ?", [$id]);
+  if($user) {
+    $data = [
+      "login" => $user["login"],
+      "lastname" => $user["lastname"],
+      "firstname" => $user["firstname"],
+      "sex" => $user["sex"],
+      "birthday" => date("Y-m-d", strtotime($user["birthday"])),
+      "id" => $user["id"]
+    ]; 
+  }
+
+if(!empty($_POST["id"]) && !empty($_POST["login"]) && !empty($_POST["lastname"]) && !empty($_POST["firstname"]) && !empty($_POST["password"]) && isset($_POST["sex"]) && !empty($_POST["birthday"])) {
+    
+  $message = "";
+  $data = [
+    "login" => trim(addslashes(strip_tags($_POST["login"]))),
+    "lastname" => trim(addslashes(strip_tags($_POST["lastname"]))),
+    "firstname" => trim(addslashes(strip_tags($_POST["firstname"]))),
+    "password" => password_hash($_POST['password'], PASSWORD_BCRYPT),
+    "sex" => intval($_POST["sex"]),
+    "birthday" => date("Y-m-d", strtotime($_POST["birthday"])),
+    "id" => intval($_POST["id"])
+  ];
+
+  $user = $DB->fetch("SELECT `id` FROM `users` WHERE `login` = ? && `id` != ?", [$data["login"], $data["id"]]);
+  if($user) {
+    $err = "Этот логин занят";
+    return;
+  }
+
+  $result = $DB->exec("UPDATE `users` SET `login` = ?, `lastname` = ?, `firstname` = ?, `password` = ?, `sex` = ?, `birthday` = ?, `updated_at` = now() WHERE `id` = ?", array_values($data));
+  if($result) {
+    $message = "Данные обновленны. Вы будете перенаправлены на главную страницу через 5 секунд";
+    unset($data);
+    header("refresh: 5; url=" . URL_HOST);
+  }
+    
+
+} else {
+  $err = "Заполните все поля";
+}
+
 //EOF

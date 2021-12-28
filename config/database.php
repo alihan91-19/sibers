@@ -25,8 +25,8 @@ class DB {
   // execute sql (delete, update, insert)
   function exec ($sql, $data=null) {
     try {
-      $this->result = $this->pdo->prepare($sql);
-      $this->result->execute($data);
+      $this->result = $this->pdo->prepare($sql);    
+      $this->result->execute($data);   
       return true;
     } catch (Exception $ex) {
       $this->error = $ex->getMessage();
@@ -38,5 +38,10 @@ class DB {
   function fetch ($sql, $data=null) {
     if ($this->exec($sql, $data) === false) { return false; }
     return $this->result->fetch();
+  }
+
+  function fetchAll ($sql) {
+    if ($this->exec($sql, $data = null) === false)  {  return false; }
+    return $this->result->fetchAll();
   }
 }
