@@ -2,8 +2,6 @@
 
 require_once "./core.php";
 
-print_r ($_POST);
-
 $isLogin = false;
 
 if (isset($_GET["logout"])){
@@ -12,43 +10,31 @@ if (isset($_GET["logout"])){
 
 if(isset($_SESSION["user"]["id"])) {
   $isLogin = true;
-  // select user by id from db
-  // if user !exist $isLogin = false; unset session;
 } else {
-  // if password and email select user from db by email and chech password
-  // if data is right set session id as user id and redirect to index.php
-  // else return error
-  // show form with or withour error
-
-  if (isset($_POST['password']) && isset($_POST['email'])) {
+  //auth
+  if (isset($_POST['password']) && isset($_POST['login'])) {
     require_once PATH_CONFIG . "database.php";
     $DB = new DB();
       $user = $DB->fetch(
-        "SELECT * FROM `users` WHERE `email`=?", [$_POST["email"]]
+        "SELECT * FROM `users` WHERE `login`=? && `isAdmin` = 1", [trim(addslashes(strip_tags($_POST["login"])))]
       );
       if(is_array($user)) {
-        print_r ($user);
-        //$pass = password_verify($_POST["password"], $user["password"]);
-        $pass = md5($_POST["password"]) == $user["password"] ? true : false;
-
+        $pass = password_verify($_POST["password"], $user["password"]);
         if ($pass){
-          print_r ($pass);
           $_SESSION["user"]["id"] = $user["id"];
           header("Location: " . PATH_BASE);
+        } else {
+          $err = "Password is incorrect";
         }
         
+      } else {
+        $err = "Login is incorrect";
       }
   
   }
 }
 
 if($isLogin) {
-  
-  // select users
-  // add user
-  // edit user
-  // delete user
-
   // connect to db
   require_once PATH_CONFIG . "database.php";
 

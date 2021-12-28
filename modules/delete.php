@@ -1,5 +1,6 @@
 <?php 
 
+//delete user by id
 if(isset($_GET["id"])) {
   print "Deleting...";
   $id = intval($_GET["id"]);

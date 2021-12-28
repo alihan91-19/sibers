@@ -1,7 +1,7 @@
 <?php
 
 class DB {
-  // connect to databasa
+  // connect to database
   private $pdo = null;
   private $result = null;
   public $error;
@@ -22,7 +22,7 @@ class DB {
     if ($this->pdo !== null) { $this->pdo = null; }
   }
  
-  // execute sql (delete, update, insert)
+  // execute sql
   function exec ($sql, $data=null) {
     try {
       $this->result = $this->pdo->prepare($sql);    

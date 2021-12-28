@@ -1,18 +1,18 @@
 <?php
 
+//show all users
 $page = isset($_GET["page"]) ? intval($_GET["page"]) : 0;
 if($page > 0) $page--;
 
-$inpage = isset($_GET["inpage"]) ? intval($_GET["inpage"]) : 10;
+$inpage = 10;
 
 $sort = isset($_GET["sort"]) ? ($_GET["sort"] == "asc" ? "asc" : "desc") : "";
 
-$users = $DB->fetchAll("SELECT * FROM `users` ORDER BY id LIMIT " . ($page*$inpage) . "," . $inpage);
+$users = $DB->fetchAll("SELECT * FROM `users` ORDER BY id {$sort} LIMIT " . ($page*$inpage) . "," . $inpage);
 
 $data = "";
 
 if($users) {
-  print_r ($users);
   foreach($users as $value) {
     $data .= '<tr>
       <td>' . $value["id"] . '</td>  

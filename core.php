@@ -11,16 +11,13 @@ define("DB_USER", "root");
 define("DB_PASSWORD", "");
  
 // site url
-define("URL_HOST", "http://localhost/task/");   
+define("URL_HOST", "http://localhost/");   
 
 // folders' path
-define("PATH_BASE", "/task/");
-
+define("PATH_BASE", "/");
 define("PATH_CONFIG", __DIR__ . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR);
 define("PATH_MODULES", __DIR__ . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR);
 define("PATH_TMP", __DIR__  . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR);
-
-print_r (PATH_BASE);
 
 // start session
 session_start();
