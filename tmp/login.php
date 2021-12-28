@@ -1,4 +1,4 @@
-<?php if($err) print "<div class='color-danger'>{$err}</div>"; ?>
+<?php if($err) print "<div class='text-danger'>{$err}</div>"; ?>
 
 <form action="<?php print PATH_BASE . "index.php"; ?>" method="post">
   <div class="mb-3">

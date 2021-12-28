@@ -1,6 +1,6 @@
-<?php if(!empty($err)) print "<div class='danger'>{$err}</div>"; ?>
+<?php if(!empty($err)) print "<div class='text-danger'>{$err}</div>"; ?>
 <?php if(!empty($message)){
-   print "<div class='danger'>{$message}</div>";
+   print "<div class='text-success'>{$message}</div>";
 } else {
 ?>
 
